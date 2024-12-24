@@ -1,0 +1,91 @@
+{
+    "patterns": {
+        "code_execution": {
+            "description": "Padrões que podem indicar execução de código arbitrário",
+            "severity": "high",
+            "patterns": [
+                "eval\\s*\\(",
+                "exec\\s*\\(",
+                "execfile\\s*\\(",
+                "system\\s*\\(",
+                "popen\\s*\\(",
+                "subprocess\\.call",
+                "subprocess\\.Popen",
+                "os\\.system",
+                "CreateProcess",
+                "WinExec",
+                "ShellExecute",
+                "Runtime\\.getRuntime\\(\\)\\.exec"
+            ]
+        },
+        "network": {
+            "description": "Padrões relacionados a atividades de rede suspeitas",
+            "severity": "medium",
+            "patterns": [
+                "socket\\s*\\(",
+                "connect\\s*\\(",
+                "bind\\s*\\(",
+                "listen\\s*\\(",
+                "urllib\\.request",
+                "requests\\.get",
+                "requests\\.post",
+                "wget\\s+",
+                "curl\\s+"
+            ]
+        },
+        "file_operations": {
+            "description": "Operações suspeitas em arquivos",
+            "severity": "medium",
+            "patterns": [
+                "open\\s*\\(",
+                "write\\s*\\(",
+                "unlink\\s*\\(",
+                "remove\\s*\\(",
+                "chmod\\s*\\(",
+                "CreateFile",
+                "WriteFile",
+                "DeleteFile",
+                "MoveFile"
+            ]
+        },
+        "crypto_mining": {
+            "description": "Padrões relacionados a mineração de criptomoedas",
+            "severity": "high",
+            "patterns": [
+                "stratum\\+tcp://",
+                "xmrig",
+                "cpuminer",
+                "minerd",
+                "cryptonight",
+                "hashrate"
+            ]
+        },
+        "obfuscation": {
+            "description": "Técnicas de ofuscação de código",
+            "severity": "high",
+            "patterns": [
+                "base64\\s*\\(",
+                "encode\\s*\\(",
+                "decrypt\\s*\\(",
+                "fromhex\\s*\\(",
+                "rot13",
+                "\\\\x[0-9a-fA-F]{2}",
+                "\\\\u[0-9a-fA-F]{4}"
+            ]
+        },
+        "persistence": {
+            "description": "Técnicas de persistência no sistema",
+            "severity": "high",
+            "patterns": [
+                "Registry\\.",
+                "RegCreateKey",
+                "RegSetValue",
+                "CurrentVersion\\\\Run",
+                "StartupItems",
+                "crontab\\s+-e",
+                "/etc/cron",
+                "SystemV\\\\CurrentControlSet"
+            ]
+        }
+    }
+}

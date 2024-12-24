@@ -1,0 +1,108 @@
+# Automated File Analysis Tool
+
+## Overview
+This tool is designed for automated analysis of potentially suspicious files. It provides detailed information about files including their type, size, cryptographic hashes, and checks for suspicious patterns that might indicate malicious content.
+
+## Features
+- File metadata analysis (size, type, name)
+- SHA256 hash calculation
+- MIME type detection
+- Suspicious pattern detection
+- Support for both single file and directory batch analysis
+- Clean and modern C++ implementation
+- Exception-safe operation
+
+## Dependencies
+- C++17 or later
+- OpenSSL development libraries
+- libmagic
+- CMake (for building)
+
+## Installation on Arch Linux
+
+1. Install required dependencies:
+```bash
+sudo pacman -S openssl file cmake gcc make nlohmann-json
+```
+
+2. Clone the repository:
+```bash
+git clone https://github.com/yourusername/file-analyzer
+cd file-analyzer
+```
+
+3. Build the project:
+```bash
+mkdir build
+cd build
+cmake ..
+make
+```
+
+## Usage
+
+### Basic Usage
+```bash
+./file_analyzer <arquivo_ou_diretorio> [patterns_json]
+```
+
+### Example Output
+```
+=== File Analysis Report ===
+Filename: test.exe
+Size: 45678 bytes
+Type: application/x-executable
+SHA256: a1b2c3d4e5f6...
+Suspicious: YES
+Detected patterns:
+- CreateProcess
+- WinExec
+=========================
+```
+
+### API Usage
+```cpp
+#include "file_analyzer.hpp"
+
+security::FileAnalyzer analyzer;
+
+// Add custom suspicious patterns
+analyzer.add_suspicious_pattern("dangerous_function");
+
+// Analyze single file
+auto info = analyzer.analyze_file("suspicious_file.exe");
+
+// Analyze directory
+auto results = analyzer.batch_analyze("/path/to/directory");
+```
+
+## Project Structure
+```
+.
+├── CMakeLists.txt
+├── include/
+│   └── security/
+│       ├── pattern_manager.hpp
+│       └── file_analyzer.hpp
+├── src/
+│   ├── file_analyzer.cpp
+|   ├── pattern_manager.cpp
+│   └── main.cpp
+└── README.md
+```
+
+## Contributing
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
+
+## Security Considerations
+- This tool should be used in a controlled environment
+- Analysis of malicious files should be performed in an isolated environment
+- The tool does not provide protection against malware execution
+- Use proper security practices when handling suspicious files
+
+## License
+MIT License - See LICENSE file for details
