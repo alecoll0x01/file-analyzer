@@ -1,84 +1,106 @@
 # Automated File Analysis Tool
 
-## Overview
-This tool is designed for automated analysis of potentially suspicious files. It provides detailed information about files including their type, size, cryptographic hashes, and checks for suspicious patterns that might indicate malicious content.
+A robust C++ tool for automated analysis of potentially suspicious files, providing comprehensive file information including metadata, cryptographic hashes, and malicious pattern detection.
 
 ## Features
-- File metadata analysis (size, type, name)
-- SHA256 hash calculation
-- MIME type detection
-- Suspicious pattern detection
-- Support for both single file and directory batch analysis
-- Clean and modern C++ implementation
-- Exception-safe operation
 
-## Dependencies
+- Comprehensive file analysis:
+  - File metadata extraction (size, type, name)
+  - SHA256 hash calculation
+  - MIME type detection
+  - Suspicious pattern recognition
+- Batch processing support for directory analysis
+- Modern, exception-safe C++ implementation
+- Extensible pattern detection system
+- JSON output format support
+
+## Prerequisites
+
 - C++17 or later
-- OpenSSL development libraries
+- OpenSSL libraries
 - libmagic
-- CMake (for building)
+- CMake 3.12+
+- nlohmann-json library
 
-## Installation on Arch Linux
+## Installation
 
-1. Install required dependencies:
+### Arch Linux
+
+1. Install dependencies:
 ```bash
 sudo pacman -S openssl file cmake gcc make nlohmann-json
 ```
 
-2. Clone the repository:
+2. Clone and build:
 ```bash
 git clone https://github.com/yourusername/file-analyzer
 cd file-analyzer
+mkdir build && cd build
+cmake ..
+make -j$(nproc)
 ```
 
-3. Build the project:
-```bash
-mkdir build
-cd build
-cmake ..
-make
-```
+### Other Linux Distributions
+
+Please refer to your distribution's package manager for installing the required dependencies.
 
 ## Usage
 
-### Basic Usage
+### Command Line Interface
+
+Basic file analysis:
 ```bash
-./file_analyzer <arquivo_ou_diretorio> [patterns_json]
+./file_analyzer <file_path>
+```
+
+Directory analysis with custom patterns:
+```bash
+./file_analyzer <directory_path> patterns.json
 ```
 
 ### Example Output
-```
-=== File Analysis Report ===
-Filename: test.exe
-Size: 45678 bytes
-Type: application/x-executable
-SHA256: a1b2c3d4e5f6...
-Suspicious: YES
-Detected patterns:
-- CreateProcess
-- WinExec
-=========================
+
+```json
+{
+  "analysis_result": {
+    "filename": "test.exe",
+    "size_bytes": 45678,
+    "mime_type": "application/x-executable",
+    "sha256": "a1b2c3d4e5f6...",
+    "suspicious": true,
+    "detected_patterns": [
+      "CreateProcess",
+      "WinExec"
+    ]
+  }
+}
 ```
 
-### API Usage
+### C++ API Integration
+
 ```cpp
-#include "file_analyzer.hpp"
+#include "security/file_analyzer.hpp"
 
-security::FileAnalyzer analyzer;
-
-// Add custom suspicious patterns
-analyzer.add_suspicious_pattern("dangerous_function");
-
-// Analyze single file
-auto info = analyzer.analyze_file("suspicious_file.exe");
-
-// Analyze directory
-auto results = analyzer.batch_analyze("/path/to/directory");
+int main() {
+    security::FileAnalyzer analyzer;
+    
+    // Configure custom patterns
+    analyzer.add_suspicious_pattern("dangerous_function");
+    
+    // Single file analysis
+    auto result = analyzer.analyze_file("suspicious_file.exe");
+    
+    // Batch directory analysis
+    auto batch_results = analyzer.batch_analyze("/path/to/directory");
+    
+    return 0;
+}
 ```
 
 ## Project Structure
+
 ```
-.
+file-analyzer/
 ├── CMakeLists.txt
 ├── include/
 │   └── security/
@@ -86,23 +108,45 @@ auto results = analyzer.batch_analyze("/path/to/directory");
 │       └── file_analyzer.hpp
 ├── src/
 │   ├── file_analyzer.cpp
-|   ├── pattern_manager.cpp
+│   ├── pattern_manager.cpp
 │   └── main.cpp
+├── tests/
+│   └── unit_tests/
+├── docs/
+│   └── API.md
 └── README.md
 ```
 
-## Contributing
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
+## Security Guidelines
 
-## Security Considerations
-- This tool should be used in a controlled environment
-- Analysis of malicious files should be performed in an isolated environment
-- The tool does not provide protection against malware execution
-- Use proper security practices when handling suspicious files
+- Always run analysis in an isolated environment
+- Do not execute suspicious files
+- Follow proper malware handling procedures
+- Keep the tool and its dependencies updated
+- Review patterns file before usage
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+### Development Guidelines
+
+- Follow C++17 best practices
+- Include unit tests for new features
+- Document public APIs
+- Maintain exception safety
+- Update relevant documentation
 
 ## License
-MIT License - See LICENSE file for details
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+- OpenSSL project
+- libmagic developers
+- nlohmann/json library
